@@ -279,10 +279,11 @@
   }
 
   .shad-button_google{
-    @apply flex border-2 border-dark-1 flex-1 gap-4 items-center justify-center hover:bg-yellow !important;
+    @apply flex p-1.5 border-2 rounded-lg border-dark-1 flex-1 gap-4 items-center justify-center hover:bg-yellow !important;
   }
 
   .shad-button_meta{
     @apply flex border-2 border-dark-1 flex-1 gap-4 items-center justify-center hover:bg-yellow !important;
   }
+
 }

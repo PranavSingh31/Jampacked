@@ -1,12 +1,15 @@
 import { Button } from "@/components/ui/button"
+import { Link } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { SignupValidation } from "@/lib/validation"
+import { Loader } from "@/components/shared/loader"
 import { z } from "zod"
 
 const SignupForm = () => {
+    const isLoading = false;
     const form = useForm<z.infer<typeof SignupValidation>>({
         resolver: zodResolver(SignupValidation),
         defaultValues: {
@@ -37,10 +40,13 @@ const SignupForm = () => {
     return (
         <Form {...form}>
             <div className="sm:w-420 flex-center flex-col">
-                <img src="/assets/images/logo.png" alt="logo" className="min-w-30 h-auto" />
+                
+                <img src="/assets/images/logo.png" alt="logo" className="min-w-30 h-auto pt-4" />
                 <h2 className="h3-bold md:h2-bold"> Create a new account </h2>
-                <p className="text-light-3 small-medium md:base-regular mt-2"> Enter your account details </p>
+                <p className="text-light-3 small-medium md:base-regular mt-2"> Please enter your account details </p>
+            
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-full mt-4">
+
                     <FormField
                         control={form.control}
                         name="businessname"
@@ -98,12 +104,26 @@ const SignupForm = () => {
                             <img src="/assets/images/google.png" alt="Google" className="w-auto h-5" />
                             Google
                         </Button>
-                        <Button onClick={handleMetaLogin} className="shad-button_meta border-2 border-dark-1 flex-1">
+                        <Button onClick={handleMetaLogin} className="shad-button_meta">
                             <img src="/assets/images/meta.png" alt="Meta" className="w-auto h-5" />
                             Meta
                         </Button>
                     </div>
-                    <Button type="submit" className="shad-button_primary">Submit</Button>
+                    <Button type="submit" className="shad-button_primary">
+                        {isLoading ? (
+                            <div className="flex center gap-2">
+                                <Loader /> Creating Account...
+                            </div>
+                        ) : (
+                            <div className="flex center gap-2">
+                                Create Account
+                            </div>
+                        )}
+                    </Button>
+                    <p className="text-small-regular text-dark-1 text-center mt-2">
+                        Already have an account? 
+                        <Link to="/sign-in" className="text-orange text-small-semibold ml-1">Log in</Link>
+                    </p>
                 </form>
             </div>
         </Form>

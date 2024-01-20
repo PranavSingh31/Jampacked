@@ -7,9 +7,9 @@ import { Input } from "@/components/ui/input"
 import { SignupValidation } from "@/lib/validation"
 import { Loader } from "@/components/shared/loader"
 import { z } from "zod"
-import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
+// import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 
-const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;
+// const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;
 
 const SignupForm = () => {
     const isLoading = false;
@@ -23,29 +23,27 @@ const SignupForm = () => {
         },
     })
 
-    function handleGoogleLogin(response: GoogleLoginResponse | GoogleLoginResponseOffline) {
-        if ('profileObj' in response) {
-            console.log("Login Success: currentUser:", response.profileObj);
-        } else {
-            console.log("Offline access token:", response);
-        }
-    }
+    // function handleGoogleLogin(response: GoogleLoginResponse | GoogleLoginResponseOffline) {
+    //     if ('profileObj' in response) {
+    //         console.log("Login Success: currentUser:", response.profileObj);
+    //     } else {
+    //         console.log("Offline access token:", response);
+    //     }
+    // }
 
-    function handleGoogleFailure(response: any) {
-        console.error("Login Failed:", response);
-    }
+    // function handleGoogleFailure(response: any) {
+    //     console.error("Login Failed:", response);
+    // }
 
-    function handleMetaLogin() {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log('meta login')
-    }
+    // function handleMetaLogin() {
+    //     console.log('meta login')
+    // }
 
     function onSubmit(values: z.infer<typeof SignupValidation>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
+
         console.log(values)
     }
+
     return (
         <Form {...form}>
             <div className="sm:w-420 flex-center flex-col">
@@ -55,7 +53,6 @@ const SignupForm = () => {
                 <p className="text-light-3 small-medium md:base-regular mt-2"> Please enter your account details </p>
 
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-full mt-4">
-
                     <FormField
                         control={form.control}
                         name="businessname"
@@ -119,7 +116,7 @@ const SignupForm = () => {
                             </div>
                         )}
                     </Button>
-                    <div className="flex flex-row justify-center mt-0">
+                    {/* <div className="flex flex-row justify-center mt-0">
                         <GoogleLogin
                             clientId={CLIENT_ID}
                             buttonText="Login with Google"
@@ -139,7 +136,7 @@ const SignupForm = () => {
                             <img src="/assets/images/meta.png" alt="Meta" className="w-auto h-5" />
                             Meta
                         </Button>
-                    </div>
+                    </div> */}
                     <p className="text-small-regular text-dark-1 text-center mt-2">
                         Already have an account?
                         <Link to="/sign-in" className="text-orange text-small-semibold ml-1">Log in</Link>

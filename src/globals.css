@@ -283,7 +283,7 @@
   }
 
   .shad-button_meta{
-    @apply flex border-2 border-dark-1 flex-1 gap-4 items-center justify-center hover:bg-yellow !important;
+    @apply flex p-1.5 pr-20 pl-20 rounded-lg border-2 border-dark-1 flex-1 gap-4 items-center justify-center hover:bg-yellow !important;
   }
 
 }

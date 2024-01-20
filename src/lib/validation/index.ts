@@ -25,6 +25,11 @@ export const SignupValidation = z.object({
     .regex(/[\W_]/, { message: 'Password must contain at least one special character.' }),
 });
 
+// export const GoogleSignupValidation = z.object({
+//   businessname: SignupValidation.shape.businessname,
+//   location: SignupValidation.shape.location,
+// });
+
 export const LoginValidation = z.object({
   email: z.string()
     .trim()

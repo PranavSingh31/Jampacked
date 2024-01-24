@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input"
 import { SignupValidation } from "@/lib/validation"
 import { Loader } from "@/components/shared/loader"
 import { z } from "zod"
-// import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
+import { createUserAccount } from "@/lib/appwrite/api"
 
+// import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 // const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;
 
 const SignupForm = () => {
@@ -16,32 +17,15 @@ const SignupForm = () => {
     const form = useForm<z.infer<typeof SignupValidation>>({
         resolver: zodResolver(SignupValidation),
         defaultValues: {
-            businessname: '',
-            location: '',
+            number: '',
             email: '',
             password: '',
         },
     })
 
-    // function handleGoogleLogin(response: GoogleLoginResponse | GoogleLoginResponseOffline) {
-    //     if ('profileObj' in response) {
-    //         console.log("Login Success: currentUser:", response.profileObj);
-    //     } else {
-    //         console.log("Offline access token:", response);
-    //     }
-    // }
-
-    // function handleGoogleFailure(response: any) {
-    //     console.error("Login Failed:", response);
-    // }
-
-    // function handleMetaLogin() {
-    //     console.log('meta login')
-    // }
-
-    function onSubmit(values: z.infer<typeof SignupValidation>) {
-
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof SignupValidation>) {
+        const newUser = await createUserAccount(values);
+        console.log(newUser)
     }
 
     return (
@@ -55,23 +39,10 @@ const SignupForm = () => {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-full mt-4">
                     <FormField
                         control={form.control}
-                        name="businessname"
+                        name="number"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Business Name</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="" className="shad-input" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="location"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Location</FormLabel>
+                                <FormLabel>Phone Number</FormLabel>
                                 <FormControl>
                                     <Input placeholder="" className="shad-input" {...field} />
                                 </FormControl>
@@ -148,3 +119,21 @@ const SignupForm = () => {
 }
 
 export default SignupForm
+
+
+
+    // function handleGoogleLogin(response: GoogleLoginResponse | GoogleLoginResponseOffline) {
+    //     if ('profileObj' in response) {
+    //         console.log("Login Success: currentUser:", response.profileObj);
+    //     } else {
+    //         console.log("Offline access token:", response);
+    //     }
+    // }
+
+    // function handleGoogleFailure(response: any) {
+    //     console.error("Login Failed:", response);
+    // }
+
+    // function handleMetaLogin() {
+    //     console.log('meta login')
+    // }

@@ -8,7 +8,7 @@ export async function createUserAccount(user: INewUser) {
             ID.unique(),
             user.email,
             user.password,
-            user.businessname,
+            user.number,
         );
         return newAccount;
     } catch (error) {

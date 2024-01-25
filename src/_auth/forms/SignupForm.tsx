@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
@@ -14,6 +14,7 @@ import { createUserAccount } from "@/lib/appwrite/api"
 
 const SignupForm = () => {
     const isLoading = false;
+    const navigate = useNavigate();
     const form = useForm<z.infer<typeof SignupValidation>>({
         resolver: zodResolver(SignupValidation),
         defaultValues: {
@@ -24,8 +25,8 @@ const SignupForm = () => {
     })
 
     async function onSubmit(values: z.infer<typeof SignupValidation>) {
-        const newUser = await createUserAccount(values);
-        console.log(newUser)
+        console.log(values);
+        navigate('/business-details',{state:{...values}});
     }
 
     return (

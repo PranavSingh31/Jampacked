@@ -14,7 +14,7 @@ const SwiggyZomato = () => {
     <div className="custom-container flex-center flex-col">
       <img src="/assets/images/logo.png" alt="logo" className="min-w-30 h-auto pt-4 mt-4 mb-8" />
       <h2 className="mb-10 h3-bold md:h4-bold">Integrate with Swiggy/Zomato</h2>
-      <div className="grid grid-cols-2 sd:grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <button
           className="common-button shad-button_swiggy flex items-center justify-center"
           onClick={handleSwiggyClick} // Add the onClick handler here

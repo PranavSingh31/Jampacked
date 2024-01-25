@@ -1,25 +1,47 @@
 import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { BusinessValidation } from "@/lib/validation"
+import { BusinessValidation, SignupValidation } from "@/lib/validation"
 import { Loader } from "@/components/shared/loader"
 import { z } from "zod"
+import { createUserAccount } from "@/lib/appwrite/api"
 
 const BusinessForm = () => {
     const isLoading = false;
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const signupData = location.state as z.infer<typeof SignupValidation>;
+
     const form = useForm<z.infer<typeof BusinessValidation>>({
         resolver: zodResolver(BusinessValidation),
         defaultValues: {
             businessname: '',
             location: '',
         },
-    })
-    function onSubmit(values: z.infer<typeof BusinessValidation>) {
-        console.log(values)
+    });
+
+    const onSubmit = async (businessValues: z.infer<typeof BusinessValidation>) => {
+        
+        const combinedData = {
+            ...signupData,
+            ...businessValues
+        }
+
+        console.log(combinedData);
+
+        try {
+            const response = await createUserAccount(combinedData);
+            console.log('New User Created: ', response);
+            navigate('/swiggy-zomato');
+        } catch (error) {
+            console.log('Error Creating User: ', error);
+        }
     }
+
     return (
         <Form {...form}>
             <div className="sm:w-420 flex-center flex-col">

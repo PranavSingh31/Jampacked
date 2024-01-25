@@ -8,11 +8,13 @@ import { BusinessValidation, SignupValidation } from "@/lib/validation"
 import { Loader } from "@/components/shared/loader"
 import { z } from "zod"
 import { createUserAccount } from "@/lib/appwrite/api"
+import { useToast } from "@/components/ui/use-toast"
 
 const BusinessForm = () => {
     const isLoading = false;
     const location = useLocation();
     const navigate = useNavigate();
+    const {toast} = useToast();
 
     const signupData = location.state as z.infer<typeof SignupValidation>;
 
@@ -33,13 +35,16 @@ const BusinessForm = () => {
 
         console.log(combinedData);
 
-        try {
-            const response = await createUserAccount(combinedData);
-            console.log('New User Created: ', response);
-            navigate('/swiggy-zomato');
-        } catch (error) {
-            console.log('Error Creating User: ', error);
+        const newUser = await createUserAccount(combinedData);
+
+        console.log('New User Created: ', newUser);
+        if(!newUser) {
+            return toast({
+                title: 'Sign up failed. Please try again later.'
+            });
         }
+        
+        navigate('/swiggy-zomato');
     }
 
     return (

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { SignupValidation } from "@/lib/validation"
 import { Loader } from "@/components/shared/loader"
 import { z } from "zod"
-import { createUserAccount } from "@/lib/appwrite/api"
+// import { createUserAccount } from "@/lib/appwrite/api"
 
 // import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 // const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;

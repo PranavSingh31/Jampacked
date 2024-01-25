@@ -1,6 +1,6 @@
 import { INewUser } from "@/types";
 import { ID } from 'appwrite'
-import { account } from "./config";
+import { account, appwriteConfig, databases } from "./config";
 
 export async function createUserAccount(user: INewUser) {
     try {
@@ -10,7 +10,41 @@ export async function createUserAccount(user: INewUser) {
             user.password,
             user.number,
         );
-        return newAccount;
+
+        if(!newAccount) throw new Error('Account not created');
+
+        const newUser = await saveUserToDB({
+            accountId: newAccount.$id,
+            email: newAccount.email,
+            number: user.number,
+            businessname: user.businessname,
+            location: user.location,
+        });
+
+        return newUser;
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+}
+
+export async function saveUserToDB(user: {
+    accountId:string;
+    email:string;
+    number:string;
+    businessname:string;
+    location:string;
+}) {
+    try {
+        const newUser = await databases.createDocument(
+            appwriteConfig.databaseID,
+            appwriteConfig.userCollection,
+            ID.unique(),
+            user,
+        )
+
+        return newUser;
+
     } catch (error) {
         console.log(error);
         return error;

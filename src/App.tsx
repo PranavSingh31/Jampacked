@@ -8,6 +8,7 @@ import AuthLayout from './_auth/AuthLayout';
 import RootLayout from './_root/RootLayout';
 // import LandingPage from './_landing/LandingPage';
 import { Home } from './_root/pages';
+import { Toaster } from '@/components/ui/toaster';
 
 const App = () => {
   return (
@@ -30,6 +31,8 @@ const App = () => {
           {/* ... other private routes ... */}
         </Route>
       </Routes>
+
+      <Toaster />
     </main>
   )
 }

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
@@ -7,12 +7,20 @@ import { Input } from "@/components/ui/input"
 import { LoginValidation } from "@/lib/validation"
 import { Loader } from "@/components/shared/loader"
 import { z } from "zod"
+import { useToast } from "@/components/ui/use-toast"
+import { useUserContext } from "@/context/AuthContext"
+import { useSignInAccount } from "@/lib/react-query/queriesAndMutations"
 // import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 
 // const CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string;
 
-const SignupForm = () => {
-    const isLoading = false;
+const SignInForm = () => {
+    const navigate = useNavigate();
+    const {toast} = useToast();
+
+    const {checkAuthUser, isLoading: isUserLoading} = useUserContext();
+    const { mutateAsync: signInAccount} = useSignInAccount();
+
     const form = useForm<z.infer<typeof LoginValidation>>({
         resolver: zodResolver(LoginValidation),
         defaultValues: {
@@ -37,11 +45,30 @@ const SignupForm = () => {
     //     console.log('meta login')
     // }
 
-    function onSubmit(values: z.infer<typeof LoginValidation>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    const onSubmit = async (values: z.infer<typeof LoginValidation>) => {
+        
+        const session = await signInAccount({
+            email: values.email,
+            password: values.password,
+        });
+
+        if(!session) {
+            return toast({
+                title: 'Sign in failed. Please try again later.'
+            });
+        }
+        const isLoggedIn = await checkAuthUser();
+
+        if(isLoggedIn){
+            form.reset();
+            navigate('/');
+        } else {
+            return toast({
+                title: 'Sign in failed. Please try again later.'
+            });
+        }
     }
+
     return (
         <Form {...form}>
             <div className="sm:w-420 flex-center flex-col">
@@ -79,7 +106,7 @@ const SignupForm = () => {
                         )}
                     />
                     <Button type="submit" className="shad-button_primary">
-                        {isLoading ? (
+                        {isUserLoading ? (
                             <div className="flex center gap-2">
                                 <Loader /> Logging into Account...
                             </div>
@@ -120,4 +147,4 @@ const SignupForm = () => {
     )
 }
 
-export default SignupForm
+export default SignInForm

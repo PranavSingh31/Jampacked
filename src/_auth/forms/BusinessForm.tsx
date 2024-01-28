@@ -16,10 +16,10 @@ const BusinessForm = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const {toast} = useToast();
-    const {checkAuthUser, isLoading: isUserLoading} = useUserContext();
+    const {checkAuthUser} = useUserContext();
 
     const { mutateAsync: createUserAccount, isPending : isCreatingUser} = useCreateUserAccount();
-    const { mutateAsync: signInAccount, isPending : isSigningIn} = useSignInAccount();
+    const { mutateAsync: signInAccount,} = useSignInAccount();
 
 
     const signupData = location.state as z.infer<typeof SignupValidation>;

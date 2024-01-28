@@ -7,17 +7,23 @@ import { Input } from "@/components/ui/input"
 import { BusinessValidation, SignupValidation } from "@/lib/validation"
 import { Loader } from "@/components/shared/loader"
 import { z } from "zod"
-import { createUserAccount } from "@/lib/appwrite/api"
 import { useToast } from "@/components/ui/use-toast"
+import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations"
+import { useUserContext } from "@/context/AuthContext"
+import { v4 as uuidv4 } from 'uuid';
 
 const BusinessForm = () => {
-    const isLoading = false;
     const location = useLocation();
     const navigate = useNavigate();
     const {toast} = useToast();
+    const {checkAuthUser, isLoading: isUserLoading} = useUserContext();
+
+    const { mutateAsync: createUserAccount, isPending : isCreatingUser} = useCreateUserAccount();
+    const { mutateAsync: signInAccount, isPending : isSigningIn} = useSignInAccount();
+
 
     const signupData = location.state as z.infer<typeof SignupValidation>;
-
+    const accountId = uuidv4();
     const form = useForm<z.infer<typeof BusinessValidation>>({
         resolver: zodResolver(BusinessValidation),
         defaultValues: {
@@ -29,6 +35,7 @@ const BusinessForm = () => {
     const onSubmit = async (businessValues: z.infer<typeof BusinessValidation>) => {
         
         const combinedData = {
+            accountId,
             ...signupData,
             ...businessValues
         }
@@ -38,13 +45,33 @@ const BusinessForm = () => {
         const newUser = await createUserAccount(combinedData);
 
         console.log('New User Created: ', newUser);
+
         if(!newUser) {
             return toast({
                 title: 'Sign up failed. Please try again later.'
             });
         }
-        
-        navigate('/swiggy-zomato');
+
+        const session = await signInAccount({
+            email: combinedData.email,
+            password: combinedData.password,
+        });
+
+        if(!session) {
+            return toast({
+                title: 'Sign in failed. Please try again later.'
+            });
+        }
+        const isLoggedIn = await checkAuthUser();
+
+        if(isLoggedIn){
+            form.reset();
+            navigate('/swiggy-zomato');
+        } else {
+            return toast({
+                title: 'Sign in failed. Please try again later.'
+            });
+        }
     }
 
     return (
@@ -84,7 +111,7 @@ const BusinessForm = () => {
                         )}
                     />
                     <Button type="submit" className="shad-button_primary">
-                        {isLoading ? (
+                        {isCreatingUser ? (
                             <div className="flex center gap-2">
                                 <Loader /> Logging into Account...
                             </div>

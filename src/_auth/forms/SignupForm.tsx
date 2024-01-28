@@ -80,11 +80,11 @@ const SignupForm = () => {
                     <Button type="submit" className="shad-button_primary">
                         {isLoading ? (
                             <div className="flex center gap-2">
-                                <Loader /> Creating Account...
+                                <Loader /> ...
                             </div>
                         ) : (
                             <div className="flex center gap-2">
-                                Create Account
+                                Continue
                             </div>
                         )}
                     </Button>

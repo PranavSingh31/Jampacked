@@ -1,4 +1,3 @@
-// SwiggyZomato.js
 const SwiggyZomato = () => {
   
   // Define the onClick handler functions

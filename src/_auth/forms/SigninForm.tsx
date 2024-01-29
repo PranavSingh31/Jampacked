@@ -54,7 +54,7 @@ const SignInForm = () => {
 
         if(!session) {
             return toast({
-                title: 'Sign in failed. Please try again later.'
+                title: 'Unregistered email or incorrect password. Please try again.',
             });
         }
         

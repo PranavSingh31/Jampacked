@@ -1,17 +1,6 @@
 import * as z from "zod"
 
 export const SignupValidation = z.object({
-  businessname: z.string()
-    .trim()
-    .min(2, { message: 'Business name is too short.' })
-    .max(100, { message: 'Business name is too long.' }),
-
-  location: z.string()
-    .trim()
-    .min(2, { message: 'Location is too short.' })
-    .max(100, { message: 'Location is too long.' })
-    .regex(/^[a-zA-Z0-9\s,.'-]*$/, { message: 'Location contains invalid characters.' }),
-
   email: z.string()
     .trim()
     .email({ message: 'Invalid email address.' }),
@@ -23,6 +12,22 @@ export const SignupValidation = z.object({
     .regex(/[a-z]/, { message: 'Password must contain at least one lowercase letter.' })
     .regex(/[0-9]/, { message: 'Password must contain at least one number.' })
     .regex(/[\W_]/, { message: 'Password must contain at least one special character.' }),
+
+  number: z.string()
+    .regex(/^[0-9]{10}$/, { message: 'Invalid phone number.' }),
+});
+
+export const BusinessValidation = z.object({
+  businessname: z.string()
+  .trim()
+  .min(2, { message: 'Business name is too short.' })
+  .max(100, { message: 'Business name is too long.' }),
+
+location: z.string()
+  .trim()
+  .min(2, { message: 'Location is too short.' })
+  .max(100, { message: 'Location is too long.' })
+  .regex(/^[a-zA-Z0-9\s,.'-]*$/, { message: 'Location contains invalid characters.' }),
 });
 
 export const LoginValidation = z.object({

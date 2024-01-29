@@ -270,6 +270,14 @@
     @apply bg-orange hover:bg-white text-light-1 hover:text-dark-1 hover:border-2 hover:border-dark-1 flex gap-2 !important;
   }
 
+  /* .shad-button_swiggy {
+    @apply bg-white text-swiggy font-bold py-2 px-4 rounded shadow-lg m-2 ;
+  }
+
+  .shad-button_zomato {
+    @apply bg-zomato text-white font-bold py-2 px-4 rounded shadow-lg m-2  ;
+  } */
+
   .shad-button_dark_4 {
     @apply h-12 bg-dark-4 px-5 text-light-1 flex gap-2 !important;
   }
@@ -283,7 +291,25 @@
   }
 
   .shad-button_meta{
-    @apply flex border-2 border-dark-1 flex-1 gap-4 items-center justify-center hover:bg-yellow !important;
+    @apply flex p-1.5 pr-20 pl-20 rounded-lg border-2 border-dark-1 flex-1 gap-4 items-center justify-center hover:bg-yellow !important;
+  }
+
+  .shad-button_swiggy,
+  .shad-button_zomato {
+    @apply min-w-96 h-72 flex items-center justify-center text-wrap border-2 border-dark-1 rounded-lg; /* Adjust width and height */
+    flex-direction: column; /* Stack items vertically */
+  }
+
+  .shad-button_swiggy {
+    @apply bg-white text-swiggy font-bold py-2 px-4 rounded shadow-lg m-2 ;
+  }
+
+  .shad-button_zomato {
+    @apply bg-white text-zomato font-bold py-2 px-4 rounded shadow-lg m-2  ;
+  }
+
+  .custom-container {
+    @apply w-full max-w-none h-screen flex flex-col items-center justify-start min-h-screen; /* Full screen height and start items at the top */
   }
 
 }

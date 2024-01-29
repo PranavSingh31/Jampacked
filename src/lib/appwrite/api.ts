@@ -11,7 +11,7 @@ export async function createUserAccount(user: INewUser) {
             user.number,
         );
 
-        if(!newAccount) throw new Error('Account not created');
+        if(!newAccount) return Error('Account not created');
 
         const newUser = await saveUserToDB({
             accountId: newAccount.$id,
@@ -24,7 +24,7 @@ export async function createUserAccount(user: INewUser) {
         return newUser;
     } catch (error) {
         console.log(error);
-        return error;
+        return null;
     }
 }
 
@@ -63,7 +63,7 @@ export async function signInAccount(user: {
         return session;
     } catch (error) {
         console.log(error);
-        return error;
+        return null;
     }
 }
 

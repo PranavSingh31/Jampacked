@@ -33,51 +33,62 @@ const BusinessForm = () => {
     });
 
     const onSubmit = async (businessValues: z.infer<typeof BusinessValidation>) => {
-        
+    
         const combinedData = {
             accountId,
             ...signupData,
             ...businessValues
         }
+    
+        try {
+            const newUser = await createUserAccount(combinedData);
 
-        console.log(combinedData);
-
-        const newUser = await createUserAccount(combinedData);
-
-        console.log('New User Created: ', newUser);
-
-        if(!newUser) {
-            return toast({
-                title: 'Sign up failed. Please try again later.'
+            if(newUser===null) {
+                return toast({
+                    title: 'Phone number/Email already exists. Please try again later.'
+                });
+            }
+            console.log('new account created')
+            const session = await signInAccount({
+                email: combinedData.email,
+                password: combinedData.password,
             });
-        }
 
-        const session = await signInAccount({
-            email: combinedData.email,
-            password: combinedData.password,
-        });
+            if(!session) {
+                return toast({
+                    title: 'Sign in failed. Please try again later.'
+                });
+            }
 
-        if(!session) {
-            return toast({
-                title: 'Sign in failed. Please try again later.'
-            });
-        }
-        const isLoggedIn = await checkAuthUser();
+            const isLoggedIn = await checkAuthUser();
 
-        if(isLoggedIn){
-            form.reset();
-            navigate('/swiggy-zomato');
-        } else {
-            return toast({
-                title: 'Sign in failed. Please try again later.'
-            });
+            if(isLoggedIn){
+                form.reset();
+                navigate('/swiggy-zomato');
+            } else {
+                toast({
+                    title: 'Sign in failed. Please try again later.'
+                });
+            }
+
+        } catch (error) {
+            if ((error as Error).message.includes("A user with the same id, email, or phone already exists")) {
+                toast({
+                    title: 'An account with the provided email or phone number already exists.'
+                });
+            } else {
+                toast({
+                    title: 'An unexpected error occurred. Please try again later.'
+                });
+            }
         }
     }
+    
+    
 
     return (
         <Form {...form}>
             <div className="sm:w-420 flex-center flex-col">
-
                 <img src="/assets/images/logo.png" alt="logo" className="min-w-30 h-auto pt-4" />
                 <h2 className="h3-bold md:h2-bold"> Welcome Back !!! </h2>
                 <p className="text-light-3 small-medium md:base-regular mt-2"> Please enter your account details </p>

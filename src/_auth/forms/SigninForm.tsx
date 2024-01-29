@@ -57,6 +57,7 @@ const SignInForm = () => {
                 title: 'Sign in failed. Please try again later.'
             });
         }
+        
         const isLoggedIn = await checkAuthUser();
 
         if(isLoggedIn){

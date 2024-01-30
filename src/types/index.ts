@@ -17,9 +17,9 @@ export type INewUser = {
 };
 
 export type IUser = {
-    id: string;
-    number: string;
-    email: string;
-    businessname: string;
-    location: string;
+    accountId:string;
+    email:string;
+    number:string;
+    businessname:string;
+    location:string;
 };
